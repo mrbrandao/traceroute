@@ -6,7 +6,7 @@ So this is a documentation of what I've gathered so far.
 
 TTL stands for Time To Live and it's an 8bit field in the IP Header. It's basically a security feature to avoid routing infinity loops between routers. 
   
-So in `traceroute`,  TTL is initially set to 1 until it receives an ICMP "port unreachable". To follow the hosts,  we must wait for an ICMP "time exceeded" reply from a gateway. After that we can record the round-trip delay and send another package with TTL, incremented by one.
+So in `traceroute`,  TTL is initially set to 1 until it receives an ICMP type "echo reply". To follow the hosts,  we must wait for an ICMP "time exceeded" reply from a gateway. After that we can record the round-trip delay and send another package with TTL, incremented by one.
   
 So to implement that, we need to create a basic loop, that will represent the number of hops and increment the TTL in each loop interaction.
 
@@ -38,7 +38,8 @@ n, cm, peer, err := p.ReadFrom(rb)
 
 ```
 go get github.com/isca0/traceroute
-go run main.go
+go build
+sudo ./traceroute 
 ```
 By default, it will query `redhat.cz` but you can use the flag `-host` to specify a different target to trace.  
 _pps: This will open system sockets, so it must run as root._ :wink:

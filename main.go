@@ -52,7 +52,7 @@ func main() {
 		},
 	}
 	rb := make([]byte, 1500)
-	for i := 1; i <= 64; i++ { // predefined hops size
+	for i := 1; i <= 64; i++ { // predefined max hops size
 		wm.Body.(*icmp.Echo).Seq = i
 		wb, err := wm.Marshal(nil)
 		if err != nil {
@@ -78,16 +78,15 @@ func main() {
 			log.Fatal(err)
 		}
 		rm, _ := icmp.ParseMessage(1, rb[:n])
-		fmt.Println(rm)
 		rtt := time.Since(begin)
 
 		switch rm.Type {
 		case ipv4.ICMPTypeTimeExceeded:
 			names, _ := net.LookupAddr(peer.String())
-			fmt.Printf("%d\t%v %+v %v\n\t%+v\n", i, peer, names, rtt, cm)
+			fmt.Printf("%d\t%v %+v %v\n\t%+v \t %s\n", i, peer, names, rtt, cm, rm.Type)
 		case ipv4.ICMPTypeEchoReply:
 			names, _ := net.LookupAddr(peer.String())
-			fmt.Printf("%d\t%v %+v %v\n\t%+v\n", i, peer, names, rtt, cm)
+			fmt.Printf("%d\t%v %+v %v\n\t%+v \t %s\n", i, peer, names, rtt, cm, rm.Type)
 			return
 		default:
 			log.Printf("unknown ICMP message: %+v\n", rm)
