@@ -4,7 +4,7 @@ So this is a documentation of what I've gathered so far.
 
 ### TTL
 
-TTL stands for Time To Live and it's an 8bit field in the IP Header. It's basically a security feature to avoid routing infinity loops between routers. 
+TTL stands for Time To Live and it's an 8bit field in the IP Header. It's basically a security feature to avoid routing infinite loops between routers. 
   
 So in `traceroute`,  TTL is initially set to 1 until it receives an ICMP type "echo reply". To follow the hosts,  we must wait for an ICMP "time exceeded" reply from a gateway. After that we can record the round-trip delay and send another package with TTL, incremented by one.
   
